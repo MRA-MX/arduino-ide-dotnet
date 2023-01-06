@@ -18,8 +18,10 @@
       "installNow": "The \"{0} {1}\" core has to be installed for the currently selected \"{2}\" board. Do you want to install it now?",
       "noBoardsFound": "No boards found for \"{0}\"",
       "noFQBN": "The FQBN is not available for the selected board \"{0}\". Do you have the corresponding core installed?",
+      "noNativeSerialPort": "Native serial port, can't obtain info.",
       "noPortsDiscovered": "No ports discovered",
       "noPortsSelected": "No ports selected for board: '{0}'.",
+      "nonSerialPort": "Non-serial port, can't obtain info.",
       "noneSelected": "No boards selected.",
       "openBoardsConfig": "Select other board and port…",
       "platformMissing": "The platform for the selected '{0}' board is not installed.",
@@ -37,7 +39,8 @@
       "showAllPorts": "Show all ports",
       "succesfullyInstalledPlatform": "Successfully installed platform {0}:{1}",
       "succesfullyUninstalledPlatform": "Successfully uninstalled platform {0}:{1}",
-      "typeOfPorts": "{0} ports"
+      "typeOfPorts": "{0} ports",
+      "unknownBoard": "Unknown board"
     },
     "boardsManager": "Boards Manager",
     "boardsType": {
