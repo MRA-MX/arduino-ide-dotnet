@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "Верзија: {0}\nДатум: {1}{2}\nCLI верзија: {3}{4} [{5}]\n\n{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "О {0}"
     },
     "board": {
@@ -156,6 +156,11 @@
       "uninstall": "Деинсталирај",
       "uninstallMsg": "Да ли желиш да деинсталираш {0}? ",
       "version": "Верзија {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "Додај датотеку",
@@ -352,6 +357,7 @@
       "manualProxy": "Ручно подешавање посредника",
       "network": "Мрежа",
       "newSketchbookLocation": "Одабери нову локацију радне свеске",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "Без посредника",
       "proxySettings": {
         "hostname": "Host name",

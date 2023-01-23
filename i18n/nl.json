@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "Versie: {0}\nDatum: {1}{2}\nCLI versie: {3}{4} [{5}]\n\n{6} ",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "Over {0}"
     },
     "board": {
@@ -156,6 +156,11 @@
       "uninstall": "Verwijderen",
       "uninstallMsg": "Wil je {0} verwijderen?",
       "version": "Versie {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "Bestand Toevoegen",
@@ -352,6 +357,7 @@
       "manualProxy": "Manuele proxy configuratie",
       "network": "Netwerk",
       "newSketchbookLocation": "Selecteer een nieuwe schetsboeklocatie.",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "Geen proxy",
       "proxySettings": {
         "hostname": "Host name",

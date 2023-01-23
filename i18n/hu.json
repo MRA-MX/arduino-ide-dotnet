@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "Verziószám: {0}\nDátum: {1}{2}\nCLI Verziószám: {3}{4} [{5}]\n\n{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "About {0}"
     },
     "board": {
@@ -156,6 +156,11 @@
       "uninstall": "Eltávolítás",
       "uninstallMsg": "El szeretnéd távolítani a következőt: {0}? ",
       "version": "Verzió: {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "Fájl hozzáadása",
@@ -352,6 +357,7 @@
       "manualProxy": "Kézi proxy konfiguráció",
       "network": "Hálózat",
       "newSketchbookLocation": "Új Vázlatfüzet/Sketchbook elérési út",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "Nincs proxy",
       "proxySettings": {
         "hostname": "Host name",

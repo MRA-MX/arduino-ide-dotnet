@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "Version: {0}Date: {1}{2} Version CLI: {3}{4} [{5}]{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "A propos de {0}"
     },
     "board": {
@@ -86,7 +86,7 @@
       "chooseSketchVisibility": "Choisissez la visibilité du croquis :",
       "connected": "Connecté",
       "continue": "Continuer",
-      "donePulling": "Récupération de  '{0}' terminée.",
+      "donePulling": "Récupération de '{0}' terminée.",
       "donePushing": "Téléchargement terminé pour '{0}'",
       "embed": "Embarqué : ",
       "emptySketchbook": "Votre carnet de croquis est vide",
@@ -156,6 +156,11 @@
       "uninstall": "Désinstaller",
       "uninstallMsg": "Voulez vous désinstaller {0}?",
       "version": "Version {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "Ajouter un fichier",
@@ -352,6 +357,7 @@
       "manualProxy": "Configuration manuelle du proxy",
       "network": "Réseau",
       "newSketchbookLocation": "Sélectionner la localisation du nouveau croquis.",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "Aucun proxy",
       "proxySettings": {
         "hostname": "Host name",

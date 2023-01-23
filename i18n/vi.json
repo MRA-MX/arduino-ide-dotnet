@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "Phiên bản: {0}\nNgày: {1}{2}\nPhiên bản CLI: {3}{4} [{5}]\n\n{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "Về {0}"
     },
     "board": {
@@ -156,6 +156,11 @@
       "uninstall": "Gỡ cài đặt",
       "uninstallMsg": "Bạn có muốn gỡ cài đặt {0}?",
       "version": "Phiên bản {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "Thêm tệp...",
@@ -352,6 +357,7 @@
       "manualProxy": "Cấu hình proxy thủ công",
       "network": "Mạng",
       "newSketchbookLocation": "Chọn địa điểm lưu sketchbook mới",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "Không có proxy",
       "proxySettings": {
         "hostname": "Host name",

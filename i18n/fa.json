@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "نسخه :{0}\nتاریخ: {1} {2}\nنسخه CLI : {3}{4} [{5}]\n\n{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "درباره {0}"
     },
     "board": {
@@ -156,6 +156,11 @@
       "uninstall": "لغو نصب",
       "uninstallMsg": "آیا شما می خواهید {0} را لغو نصب کنید؟",
       "version": "ورژن {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "فایل اظافه کن",
@@ -352,6 +357,7 @@
       "manualProxy": "پیکربندی دستی پروکسی",
       "network": "نتورک",
       "newSketchbookLocation": "مکان جدید منبع طرح ها را مشخص کنید",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "بدون پروکسی",
       "proxySettings": {
         "hostname": "نام میزبان",

@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "Version: {0}\nDatum: {1}{2}\nCLI Version: {3}{4} [{5}]\n\n{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "Über {0}"
     },
     "board": {
@@ -45,7 +45,7 @@
     },
     "bootloader": {
       "burnBootloader": "Bootloader brennen",
-      "burningBootloader": "Bootloader überschreiben...",
+      "burningBootloader": "Bootloader überschreiben ...",
       "doneBurningBootloader": "Bootloader erfolgreich gebrannt."
     },
     "burnBootloader": {
@@ -74,8 +74,8 @@
       "noUpdates": "Es sind keine aktuellen Updates verfügbar.",
       "promptUpdateBoards": "Es sind Updates für einige Ihrer Boards verfügbar.",
       "promptUpdateLibraries": "Es sind Updates für einige Ihrer Blibliotheken verfügbar.",
-      "updatingBoards": "Boards werden aktualisiert...",
-      "updatingLibraries": "Bibliotheken werden aktualisiert..."
+      "updatingBoards": "Boards werden aktualisiert ...",
+      "updatingLibraries": "Bibliotheken werden aktualisiert ..."
     },
     "cli-error-parser": {
       "keyboardError": "'Keyboard' nicht gefunden. Enthält ihr Sketch die Zeile '#include <Keyboard.h>'?",
@@ -96,7 +96,7 @@
       "notYetPulled": "Kann nicht in die Cloud geschoben werden. Es ist noch nicht heruntergeladen.",
       "offline": "Offline",
       "openInCloudEditor": "Im Cloud Editor öffnen",
-      "options": "Optionen....",
+      "options": "Optionen ...",
       "privateVisibility": "Private. Nur du siehst diesen Sketch.",
       "profilePicture": "Profilbild",
       "publicVisibility": "Public. Jeder kann mit diesen Link den Sketch sehen.",
@@ -149,13 +149,18 @@
     "component": {
       "boardsIncluded": "In diesem Paket enthaltene Boards:",
       "by": "von",
-      "filterSearch": "Filtern Sie Ihre Suche...",
+      "filterSearch": "Filtern Sie Ihre Suche ...",
       "install": "Installieren",
       "installed": "Installiert",
       "moreInfo": "Mehr Information",
       "uninstall": "Deinstallieren",
       "uninstallMsg": "Möchten Sie {0} deinstallieren?",
       "version": "Version {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "Datei hinzufügen...",
@@ -267,7 +272,7 @@
       "installWithoutDependencies": "Ohne Abhängigkeiten installieren",
       "installedSuccessfully": "Bibliothek {0}:{1} erfolgreich installiert",
       "libraryAlreadyExists": "Eine Bibliothek existiert bereits. Möchten sie diese überschreiben?",
-      "manageLibraries": "Bibliotheken verwalten...",
+      "manageLibraries": "Bibliotheken verwalten ...",
       "namedLibraryAlreadyExists": "Der Bibliothek-Ordner '{0}' existiert bereits. Überschreiben?",
       "needsMultipleDependencies": "Die Bibliothek <b>{0}:{1}</b> benötigt ein paar andere Abhängigkeiten, die derzeit nicht installiert sind:",
       "needsOneDependency": "Die Bibliothek <b>{0}:{1}</b> benötigt eine andere Abhängigkeit, welche derzeit nicht installiert ist:",
@@ -352,6 +357,7 @@
       "manualProxy": "Manuelle Proxy Einstellung",
       "network": "Netzwerk",
       "newSketchbookLocation": "Wähle einen neuen Ort für das Sketchbook ",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "Kein Proxy",
       "proxySettings": {
         "hostname": "Hostname",
@@ -393,7 +399,7 @@
       "archiveSketch": "Sketch archivieren",
       "cantOpen": "Ein Ordner mit dem Namen \"{0}\" ist bereits vorhanden. Der Sketch kann nicht geöffnet werden.",
       "close": "Sind Sie sicher, dass Sie diesen Sketch schließen möchten?",
-      "compile": "Kompiliere Sketch...",
+      "compile": "Kompiliere Sketch ...",
       "configureAndUpload": "Konfigurieren und Hochladen",
       "createdArchive": "Archiv '{0}' erstellt.",
       "doneCompiling": "Kompilieren erfolgreich!",
@@ -415,7 +421,7 @@
       "titleSketchbook": "Sketchbook",
       "upload": "Hochladen",
       "uploadUsingProgrammer": "Mit Programmer hochladen",
-      "uploading": "Hochladen...",
+      "uploading": "Hochladen ...",
       "userFieldsNotFoundError": "User Fields für das angeschlossene Board nicht gefunden",
       "verify": "Überprüfen",
       "verifyOrCompile": "Überprüfen/Kompilieren"

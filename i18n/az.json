@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}{4} [{5}]\n\n{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "Haqqında {0}"
     },
     "board": {
@@ -36,7 +36,7 @@
       "showAllAvailablePorts": "Shows all available ports when enabled",
       "showAllPorts": "Show all ports",
       "succesfullyInstalledPlatform": "Successfully installed platform {0}:{1}",
-      "succesfullyUninstalledPlatform": "Uğurla Silindi\nPlatforma 1{0}:2{1}",
+      "succesfullyUninstalledPlatform": "Uğurla Silindi Platforma {0}:{1}",
       "typeOfPorts": "{0} ports"
     },
     "boardsManager": "Boards Manager",
@@ -156,6 +156,11 @@
       "uninstall": "Sil",
       "uninstallMsg": "Do you want to uninstall {0}?",
       "version": "Version {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "Fayl Əlavə Et",
@@ -352,6 +357,7 @@
       "manualProxy": "Manual proxy configuration",
       "network": "Network",
       "newSketchbookLocation": "Select new sketchbook location",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "No proxy",
       "proxySettings": {
         "hostname": "Host name",

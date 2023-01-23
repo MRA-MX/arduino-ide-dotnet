@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "ဗားရှင်း: {0}\nရက်စွဲ: {1}{2}\nCLI ဗားရှင်း: {3}{4} [{5}]\n\n{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "{0} အကြောင်း"
     },
     "board": {
@@ -156,6 +156,11 @@
       "uninstall": "ဖြုတ်ချ",
       "uninstallMsg": "သင် {0} ကိုဖြုတ်ချချင်ပါသလား?",
       "version": "ဗားရှင်း {0}"
+    },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
     },
     "contributions": {
       "addFile": "ဖိုင်လ်ထည့်မည်",
@@ -352,6 +357,7 @@
       "manualProxy": "ကိုယ်တိုင် ကြားခံကွန်ရက်ပြင်ဆင်ခြင်း",
       "network": "ကွန်ရက်",
       "newSketchbookLocation": "ကုတ်ဖိုင်လ်စာအုပ်တည်နေရာအသစ်ရွေးမည်",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "ကြားခံကွန်ရက်မရှိ",
       "proxySettings": {
         "hostname": "အိမ်ရှင်အမည်",

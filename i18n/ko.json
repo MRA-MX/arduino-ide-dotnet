@@ -1,7 +1,7 @@
 {
   "arduino": {
     "about": {
-      "detail": "버전: {0}\n날짜: {1}{2}\nCLI 버전: {3}{4} [{5}]\n\n{6}",
+      "detail": "Version: {0}\nDate: {1}{2}\nCLI Version: {3}\n\n{4}",
       "label": "프로그램 정보 {0}"
     },
     "board": {
@@ -15,7 +15,7 @@
       "disconnected": "연결해제됨",
       "getBoardInfo": "보드정보 얻기",
       "inSketchbook": "(스케치북에서)",
-      "installNow": "\"1{0} 2{1}\"버전은 최근에 선택된 \"{2}\"보드를 설치해야 합니다. 지금 설치하시겠습니까?",
+      "installNow": "\"{0} {1}\"버전은 최근에 선택된 \"{2}\"보드를 설치해야 합니다. 지금 설치하시겠습니까?",
       "noBoardsFound": "\"{0}\"에 대한 보드를 찾을 수 없습니다.",
       "noFQBN": "The FQBN is not available for the selected board \"{0}\". Do you have the corresponding core installed?",
       "noPortsDiscovered": "포트를 찾을 수 없습니다.",
@@ -157,6 +157,11 @@
       "uninstallMsg": "설치해제를 원하십니까 {0}?",
       "version": "버전 {0}"
     },
+    "configuration": {
+      "cli": {
+        "inaccessibleDirectory": "Could not access the sketchbook location at '{0}': {1}"
+      }
+    },
     "contributions": {
       "addFile": "파일 추가",
       "fileAdded": "스케치에 하나의 파일이 추가되었습니다.",
@@ -268,7 +273,7 @@
       "installedSuccessfully": "성공적으로 설치된 라이브러리 {0}:{1}",
       "libraryAlreadyExists": "라이브러리가 이미 존재합니다. 덮어 쓰시겠습니까? ",
       "manageLibraries": "라이브러리 관리...",
-      "namedLibraryAlreadyExists": " {0} 이라는 라이브러리 폴더이름이 이미 존재합니다. 덮어 쓰시겠습니까?",
+      "namedLibraryAlreadyExists": "{0} 이라는 라이브러리 폴더이름이 이미 존재합니다. 덮어 쓰시겠습니까?",
       "needsMultipleDependencies": "라이브러리 <b>{0}:{1}</b> 는 현재 설치되지 않은 다른 종속성이 필요합니다.",
       "needsOneDependency": "The library <b>{0}:{1}</b> needs another dependency currently not installed:",
       "overwriteExistingLibrary": "기존 라이브러리를 덮어쓰시겠습니까?",
@@ -352,6 +357,7 @@
       "manualProxy": "수동 프록시 구성",
       "network": "네트워크",
       "newSketchbookLocation": "새 스케치북 위치 선택",
+      "noCliConfig": "Could not load the CLI configuration",
       "noProxy": "No proxy",
       "proxySettings": {
         "hostname": "Host name",
@@ -453,7 +459,7 @@
       "quitTitle": "정말 종료하시겠습니까?"
     },
     "editor": {
-      "unsavedTitle": "저장되지않음 – 1{0}\n "
+      "unsavedTitle": "저장되지않음 – {0}"
     },
     "messages": {
       "collapse": "Collapse",
