@@ -15,6 +15,8 @@ export namespace ResponseResultProvider {
   export const JSON: ResponseResultProvider = (response) => response.json();
 }
 
+// TODO: check if this is still needed: https://github.com/electron/electron/issues/18733
+// The original issue was reported for Electron 5.x and 6.x. Theia uses 15.x
 export function Utf8ArrayToStr(array: Uint8Array): string {
   let out, i, c;
   let char2, char3;
@@ -381,7 +383,7 @@ export class CreateApi {
       return;
     }
 
-    // do not upload "do_not_sync" files/directoris and their descendants
+    // do not upload "do_not_sync" files/directories and their descendants
     const segments = posixPath.split(posix.sep) || [];
     if (
       segments.some((segment) => Create.do_not_sync_files.includes(segment))

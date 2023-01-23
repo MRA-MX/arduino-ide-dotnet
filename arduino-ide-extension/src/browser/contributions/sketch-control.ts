@@ -18,33 +18,19 @@ import {
   open,
 } from './contribution';
 import { ArduinoMenus, PlaceholderMenuNode } from '../menu/arduino-menus';
-import { EditorManager } from '@theia/editor/lib/browser/editor-manager';
-import {
-  CurrentSketch,
-  SketchesServiceClientImpl,
-} from '../../common/protocol/sketches-service-client-impl';
-import { LocalCacheFsProvider } from '../local-cache/local-cache-fs-provider';
+import { CurrentSketch } from '../../common/protocol/sketches-service-client-impl';
 import { nls } from '@theia/core/lib/common';
 
 @injectable()
 export class SketchControl extends SketchContribution {
   @inject(ApplicationShell)
-  protected readonly shell: ApplicationShell;
+  private readonly shell: ApplicationShell;
 
   @inject(MenuModelRegistry)
-  protected readonly menuRegistry: MenuModelRegistry;
+  private readonly menuRegistry: MenuModelRegistry;
 
   @inject(ContextMenuRenderer)
-  protected readonly contextMenuRenderer: ContextMenuRenderer;
-
-  @inject(EditorManager)
-  protected override readonly editorManager: EditorManager;
-
-  @inject(SketchesServiceClientImpl)
-  protected readonly sketchesServiceClient: SketchesServiceClientImpl;
-
-  @inject(LocalCacheFsProvider)
-  protected readonly localCacheFsProvider: LocalCacheFsProvider;
+  private readonly contextMenuRenderer: ContextMenuRenderer;
 
   protected readonly toDisposeBeforeCreateNewContextMenu =
     new DisposableCollection();
@@ -84,12 +70,7 @@ export class SketchControl extends SketchContribution {
           );
 
           // if the current file is in the current opened sketch, show extra menus
-          if (
-            sketch &&
-            parentSketch &&
-            parentSketch.uri === sketch.uri &&
-            this.allowRename(parentSketch.uri)
-          ) {
+          if (sketch && parentSketch && parentSketch.uri === sketch.uri) {
             this.menuRegistry.registerMenuAction(
               ArduinoMenus.SKETCH_CONTROL__CONTEXT__MAIN_GROUP,
               {
@@ -121,12 +102,7 @@ export class SketchControl extends SketchContribution {
             );
           }
 
-          if (
-            sketch &&
-            parentSketch &&
-            parentSketch.uri === sketch.uri &&
-            this.allowDelete(parentSketch.uri)
-          ) {
+          if (sketch && parentSketch && parentSketch.uri === sketch.uri) {
             this.menuRegistry.registerMenuAction(
               ArduinoMenus.SKETCH_CONTROL__CONTEXT__MAIN_GROUP,
               {
@@ -248,27 +224,6 @@ export class SketchControl extends SketchContribution {
       id: SketchControl.Commands.OPEN_SKETCH_CONTROL__TOOLBAR.id,
       command: SketchControl.Commands.OPEN_SKETCH_CONTROL__TOOLBAR.id,
     });
-  }
-
-  protected isCloudSketch(uri: string): boolean {
-    try {
-      const cloudCacheLocation = this.localCacheFsProvider.from(new URI(uri));
-
-      if (cloudCacheLocation) {
-        return true;
-      }
-      return false;
-    } catch {
-      return false;
-    }
-  }
-
-  protected allowRename(uri: string): boolean {
-    return !this.isCloudSketch(uri);
-  }
-
-  protected allowDelete(uri: string): boolean {
-    return !this.isCloudSketch(uri);
   }
 }
 

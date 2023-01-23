@@ -1,5 +1,13 @@
 import { injectable, inject, named } from '@theia/core/shared/inversify';
-import { promises as fs, realpath, lstat, Stats, constants, rm } from 'fs';
+import {
+  promises as fs,
+  realpath,
+  lstat,
+  Stats,
+  constants,
+  rm,
+  rmSync,
+} from 'fs';
 import * as os from 'os';
 import * as temp from 'temp';
 import * as path from 'path';
@@ -43,6 +51,11 @@ import {
   firstToUpperCase,
   startsWithUpperCase,
 } from '../common/utils';
+import { BackendApplicationContribution } from '@theia/core/lib/node/backend-application';
+import {
+  Disposable,
+  DisposableCollection,
+} from '@theia/core/lib/common/disposable';
 
 const RecentSketches = 'recent-sketches.json';
 const DefaultIno = `void setup() {
@@ -59,7 +72,7 @@ void loop() {
 @injectable()
 export class SketchesServiceImpl
   extends CoreClientAware
-  implements SketchesService
+  implements SketchesService, BackendApplicationContribution
 {
   private sketchSuffixIndex = 1;
   private lastSketchBaseName: string;
@@ -69,6 +82,32 @@ export class SketchesServiceImpl
     concurrency: 1,
   });
   private inoContent: Deferred<string> | undefined;
+  /**
+   * It contains all things the IDE2 must clean up before a normal stop.
+   *
+   * When deleting the sketch, the IDE2 must close the browser window and
+   * recursively delete the sketch folder from the filesystem. The sketch
+   * cannot be deleted when the window is open because that is the currently
+   * opened workspace. IDE2 cannot delete the sketch folder from the
+   * filesystem after closing the browser window because the window can be
+   * the last, and when the last window closes, the application quits.
+   * There is no way to clean up the undesired resources.
+   *
+   * This array contains disposable instances wrapping synchronous sketch
+   * delete operations. When IDE2 closes the browser window, it schedules
+   * the sketch deletion, and the window closes.
+   *
+   * When IDE2 schedules a sketch for deletion, it creates a synchronous
+   * folder deletion as a disposable instance and pushes it into this
+   * array. After the push, IDE2 starts the sketch deletion in an
+   * asynchronous way. When the deletion completes, the disposable is
+   * removed. If the app quits when the asynchronous deletion is still in
+   * progress, it disposes the elements of this array. Since it is
+   * synchronous, it is [ensured by Theia](https://github.com/eclipse-theia/theia/blob/678e335644f1b38cb27522cc27a3b8209293cf31/packages/core/src/node/backend-application.ts#L91-L97)
+   * that IDE2 won't quit before the cleanup is done. It works only in normal
+   * quit.
+   */
+  private readonly scheduledDeletions: Disposable[] = [];
 
   @inject(ILogger)
   @named('sketches-service')
@@ -85,6 +124,14 @@ export class SketchesServiceImpl
 
   @inject(IsTempSketch)
   private readonly isTempSketch: IsTempSketch;
+
+  onStop(): void {
+    if (this.scheduledDeletions.length) {
+      this.logger.info(`>>> Disposing sketches service...`);
+      new DisposableCollection(...this.scheduledDeletions).dispose();
+      this.logger.info(`<<< Disposed sketches service.`);
+    }
+  }
 
   async getSketches({ uri }: { uri?: string }): Promise<SketchContainer> {
     const root = await this.root(uri);
@@ -629,8 +676,12 @@ export class SketchesServiceImpl
   }
 
   async deleteSketch(sketch: Sketch): Promise<void> {
+    const sketchPath = FileUri.fsPath(sketch.uri);
+    const disposable = Disposable.create(() =>
+      this.deleteSketchSync(sketchPath)
+    );
+    this.scheduledDeletions.push(disposable);
     return new Promise<void>((resolve, reject) => {
-      const sketchPath = FileUri.fsPath(sketch.uri);
       rm(sketchPath, { recursive: true, maxRetries: 5 }, (error) => {
         if (error) {
           this.logger.error(`Failed to delete sketch at ${sketchPath}.`, error);
@@ -638,9 +689,32 @@ export class SketchesServiceImpl
         } else {
           this.logger.info(`Successfully deleted sketch at ${sketchPath}.`);
           resolve();
+          const index = this.scheduledDeletions.indexOf(disposable);
+          if (index >= 0) {
+            this.scheduledDeletions.splice(index, 1);
+          } else {
+            this.logger.warn(
+              `Could not find the scheduled sketch deletion: ${sketchPath}`
+            );
+          }
         }
       });
     });
+  }
+
+  private deleteSketchSync(sketchPath: string): void {
+    this.logger.info(
+      `>>> Running sketch deletion ${sketchPath} before app quit...`
+    );
+    try {
+      rmSync(sketchPath, { recursive: true, maxRetries: 5 });
+      this.logger.info(`<<< Deleted sketch ${sketchPath}.`);
+    } catch (err) {
+      if (ErrnoException.isENOENT(err)) {
+        // ignore. it does not exist
+      }
+      throw err;
+    }
   }
 
   // Returns the default.ino from the settings or from default folder.

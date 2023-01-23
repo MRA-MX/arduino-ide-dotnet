@@ -196,6 +196,7 @@ export default new ContainerModule((bind, unbind, isBound, rebind) => {
   // Shared sketches service
   bind(SketchesServiceImpl).toSelf().inSingletonScope();
   bind(SketchesService).toService(SketchesServiceImpl);
+  bind(BackendApplicationContribution).toService(SketchesServiceImpl);
   bind(ConnectionHandler)
     .toDynamicValue(
       (context) =>
