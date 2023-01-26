@@ -14,6 +14,9 @@ import {
   SketchesServiceClientImpl,
 } from '../../../common/protocol/sketches-service-client-impl';
 import { Sketch } from '../../contributions/contribution';
+import { CreateApi } from '../../create/create-api';
+import { posixSegments } from '../../create/create-paths';
+import { LocalCacheFsProvider } from '../../local-cache/local-cache-fs-provider';
 
 @injectable()
 export class WorkspaceDeleteHandler extends TheiaWorkspaceDeleteHandler {
@@ -23,6 +26,10 @@ export class WorkspaceDeleteHandler extends TheiaWorkspaceDeleteHandler {
   private readonly sketchesService: SketchesService;
   @inject(SketchesServiceClientImpl)
   private readonly sketchesServiceClient: SketchesServiceClientImpl;
+  @inject(LocalCacheFsProvider)
+  private readonly localCacheFsProvider: LocalCacheFsProvider;
+  @inject(CreateApi)
+  private readonly createApi: CreateApi;
 
   override async execute(uris: URI[]): Promise<void> {
     const sketch = await this.sketchesServiceClient.currentSketch();
@@ -30,40 +37,49 @@ export class WorkspaceDeleteHandler extends TheiaWorkspaceDeleteHandler {
       return;
     }
     // Deleting the main sketch file.
-    if (
-      uris
-        .map((uri) => uri.toString())
-        .some((uri) => uri === sketch.mainFileUri)
-    ) {
-      const { response } = await remote.dialog.showMessageBox({
-        title: nls.localize('vscode/fileActions/delete', 'Delete'),
-        type: 'question',
-        buttons: [Dialog.CANCEL, Dialog.OK],
-        message: nls.localize(
-          'theia/workspace/deleteCurrentSketch',
-          'Do you want to delete the current sketch?'
-        ),
-      });
-      if (response === 1) {
-        // OK
-        await Promise.all([
-          ...Sketch.uris(sketch).map((uri) =>
-            this.closeWithoutSaving(new URI(uri))
-          ),
-        ]);
-        this.windowService.setSafeToShutDown();
-        this.sketchesService.deleteSketch(sketch);
-        return window.close();
-      }
+    if (uris.some((uri) => uri.toString() === sketch.mainFileUri)) {
+      return this.deleteSketch(sketch);
     }
+    // File deletion.
     return super.execute(uris);
   }
 
-  // https://github.com/eclipse-theia/theia/issues/12107
+  // fix: https://github.com/eclipse-theia/theia/issues/12107
   protected override async closeWithoutSaving(uri: URI): Promise<void> {
     const affected = getAffected(this.shell.widgets, uri);
     const toClose = [...affected].map(([, widget]) => widget);
     await this.shell.closeMany(toClose, { save: false });
+  }
+
+  private async deleteSketch(sketch: Sketch): Promise<void> {
+    const remoteUri = this.remoteUri(sketch); // TODO: warn user that it's a remote sketch
+    const { response } = await remote.dialog.showMessageBox({
+      title: nls.localize('vscode/fileActions/delete', 'Delete'),
+      type: 'question',
+      buttons: [Dialog.CANCEL, Dialog.OK],
+      message: nls.localize(
+        'theia/workspace/deleteCurrentSketch',
+        'Do you want to delete the current sketch?'
+      ),
+    });
+    if (response === 1) {
+      if (remoteUri) {
+        await this.createApi.deleteDirectory(posixSegments.toString());
+      }
+      // OK
+      await Promise.all([
+        ...Sketch.uris(sketch).map((uri) =>
+          this.closeWithoutSaving(new URI(uri))
+        ),
+      ]);
+      this.windowService.setSafeToShutDown();
+      this.sketchesService.deleteSketch(sketch);
+      return window.close();
+    }
+  }
+
+  private remoteUri(sketch: Sketch): URI | undefined {
+    return this.localCacheFsProvider.from(new URI(sketch.uri));
   }
 }
 
