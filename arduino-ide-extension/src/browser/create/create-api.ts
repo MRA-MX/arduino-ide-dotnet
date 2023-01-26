@@ -1,12 +1,13 @@
-import { injectable, inject } from '@theia/core/shared/inversify';
+import { inject, injectable } from '@theia/core/shared/inversify';
+import { ArduinoPreferences } from '../arduino-preferences';
+import { AuthenticationClientService } from '../auth/authentication-client-service';
+import { SketchCache } from '../widgets/cloud-sketchbook/cloud-sketch-cache';
 import * as createPaths from './create-paths';
 import { posix } from './create-paths';
-import { AuthenticationClientService } from '../auth/authentication-client-service';
-import { ArduinoPreferences } from '../arduino-preferences';
-import { SketchCache } from '../widgets/cloud-sketchbook/cloud-sketch-cache';
 import { Create, CreateError } from './typings';
 
 export interface ResponseResultProvider {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (response: Response): Promise<any>;
 }
 export namespace ResponseResultProvider {
@@ -63,20 +64,11 @@ type ResourceType = 'f' | 'd';
 @injectable()
 export class CreateApi {
   @inject(SketchCache)
-  protected sketchCache: SketchCache;
-
-  protected authenticationService: AuthenticationClientService;
-  protected arduinoPreferences: ArduinoPreferences;
-
-  public init(
-    authenticationService: AuthenticationClientService,
-    arduinoPreferences: ArduinoPreferences
-  ): CreateApi {
-    this.authenticationService = authenticationService;
-    this.arduinoPreferences = arduinoPreferences;
-
-    return this;
-  }
+  private readonly sketchCache: SketchCache;
+  @inject(AuthenticationClientService)
+  private readonly authenticationService: AuthenticationClientService;
+  @inject(ArduinoPreferences)
+  private readonly arduinoPreferences: ArduinoPreferences;
 
   getSketchSecretStat(sketch: Create.Sketch): Create.Resource {
     return {

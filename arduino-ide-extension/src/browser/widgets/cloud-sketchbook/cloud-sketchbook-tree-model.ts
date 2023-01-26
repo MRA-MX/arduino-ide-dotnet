@@ -127,7 +127,6 @@ export class CloudSketchbookTreeModel extends SketchbookTreeModel {
       this.tree.root = undefined;
       return;
     }
-    this.createApi.init(this.authenticationService, this.arduinoPreferences);
     this.sketchCache.init();
     const [sketches] = await Promise.all([
       this.createApi.sketches(),
