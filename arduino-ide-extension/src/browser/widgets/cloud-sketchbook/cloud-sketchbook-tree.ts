@@ -1,4 +1,3 @@
-import { SketchCache } from './cloud-sketch-cache';
 import { inject, injectable } from '@theia/core/shared/inversify';
 import URI from '@theia/core/lib/common/uri';
 import { MaybePromise } from '@theia/core/lib/common/types';
@@ -45,9 +44,6 @@ type FilesToSync = {
 export class CloudSketchbookTree extends SketchbookTree {
   @inject(LocalCacheFsProvider)
   private readonly localCacheFsProvider: LocalCacheFsProvider;
-
-  @inject(SketchCache)
-  private readonly sketchCache: SketchCache;
 
   @inject(PreferenceService)
   private readonly preferenceService: PreferenceService;
@@ -132,7 +128,7 @@ export class CloudSketchbookTree extends SketchbookTree {
       );
       await this.sync(node.remoteUri, localUri);
 
-      this.sketchCache.purgeByPath(node.remoteUri.path.toString());
+      this.createApi.sketchCache.purgeByPath(node.remoteUri.path.toString());
 
       node.commands = commandsCopy;
       this.messageService.info(
@@ -200,7 +196,7 @@ export class CloudSketchbookTree extends SketchbookTree {
       );
       await this.sync(localUri, node.remoteUri);
 
-      this.sketchCache.purgeByPath(node.remoteUri.path.toString());
+      this.createApi.sketchCache.purgeByPath(node.remoteUri.path.toString());
 
       node.commands = commandsCopy;
       this.messageService.info(
@@ -405,14 +401,14 @@ export class CloudSketchbookTree extends SketchbookTree {
       CreateUri.is(node.remoteUri)
     ) {
       let remoteFileStat: FileStat;
-      const cacheHit = this.sketchCache.getItem(node.remoteUri.path.toString());
+      const cacheHit = this.createApi.sketchCache.getItem(node.remoteUri.path.toString());
       if (cacheHit) {
         remoteFileStat = cacheHit;
       } else {
         // not found, fetch and add it for future calls
         remoteFileStat = await this.fileService.resolve(node.remoteUri);
         if (remoteFileStat) {
-          this.sketchCache.addItem(remoteFileStat);
+          this.createApi.sketchCache.addItem(remoteFileStat);
         }
       }
 
@@ -521,7 +517,7 @@ export class CloudSketchbookTree extends SketchbookTree {
    * @returns
    */
   protected override async augmentSketchNode(node: DirNode): Promise<void> {
-    const sketch = this.sketchCache.getSketch(
+    const sketch = this.createApi.sketchCache.getSketch(
       node.fileStat.resource.path.toString()
     );
 
@@ -585,7 +581,7 @@ export class CloudSketchbookTree extends SketchbookTree {
 
   protected override async isSketchNode(node: DirNode): Promise<boolean> {
     if (DirNode.is(node)) {
-      const sketch = this.sketchCache.getSketch(
+      const sketch = this.createApi.sketchCache.getSketch(
         node.fileStat.resource.path.toString()
       );
       return !!sketch;

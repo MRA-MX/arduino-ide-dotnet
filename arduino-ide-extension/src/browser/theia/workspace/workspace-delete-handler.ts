@@ -15,7 +15,6 @@ import {
 } from '../../../common/protocol/sketches-service-client-impl';
 import { Sketch } from '../../contributions/contribution';
 import { CreateApi } from '../../create/create-api';
-import { posixSegments } from '../../create/create-paths';
 import { LocalCacheFsProvider } from '../../local-cache/local-cache-fs-provider';
 
 @injectable()
@@ -64,7 +63,14 @@ export class WorkspaceDeleteHandler extends TheiaWorkspaceDeleteHandler {
     });
     if (response === 1) {
       if (remoteUri) {
-        await this.createApi.deleteDirectory(posixSegments.toString());
+        const posixPath = remoteUri.path.toString();
+        const remoteSketch = this.createApi.sketchCache.getSketch(posixPath);
+        if (!remoteSketch) {
+          throw new Error(
+            `Remote sketch with path '${posixPath}' was not cached. Cache: ${this.createApi.sketchCache.toString()}`
+          );
+        }
+        await this.createApi.deleteSketch(remoteSketch.path);
       }
       // OK
       await Promise.all([

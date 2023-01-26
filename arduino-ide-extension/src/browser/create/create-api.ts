@@ -1,4 +1,5 @@
 import { inject, injectable } from '@theia/core/shared/inversify';
+import { fetch } from 'cross-fetch';
 import { ArduinoPreferences } from '../arduino-preferences';
 import { AuthenticationClientService } from '../auth/authentication-client-service';
 import { SketchCache } from '../widgets/cloud-sketchbook/cloud-sketch-cache';
@@ -64,7 +65,7 @@ type ResourceType = 'f' | 'd';
 @injectable()
 export class CreateApi {
   @inject(SketchCache)
-  private readonly sketchCache: SketchCache;
+  readonly sketchCache: SketchCache;
   @inject(AuthenticationClientService)
   private readonly authenticationService: AuthenticationClientService;
   @inject(ArduinoPreferences)
@@ -285,7 +286,7 @@ export class CreateApi {
       this.sketchCache.addSketch(sketch);
 
       let file = '';
-      if (sketch && sketch.secrets) {
+      if (sketch.secrets) {
         for (const item of sketch.secrets) {
           file += `#define ${item.name} "${item.value}"\r\n`;
         }
@@ -409,6 +410,20 @@ export class CreateApi {
     await this.delete(posixPath, 'd');
   }
 
+  /**
+   * `sketchPath` is not the POSIX path but the path with the user UUID, username, etc.
+   * See [Create.Resource#path](./typings.ts). Unlike other endpoints, it does not support the `$HOME`
+   * variable substitution.
+   */
+  async deleteSketch(sketchPath: string): Promise<void> {
+    const url = new URL(`${this.domain()}/sketches/byPath/${sketchPath}`);
+    const headers = await this.headers();
+    await this.run(url, {
+      method: 'DELETE',
+      headers,
+    });
+  }
+
   private async delete(posixPath: string, type: ResourceType): Promise<void> {
     const url = new URL(
       `${this.domain()}/files/${type}/$HOME/sketches_v2${posixPath}`
@@ -469,14 +484,12 @@ export class CreateApi {
   }
 
   private async run<T>(
-    requestInfo: RequestInfo | URL,
+    requestInfo: URL,
     init: RequestInit | undefined,
     resultProvider: ResponseResultProvider = ResponseResultProvider.JSON
   ): Promise<T> {
-    const response = await fetch(
-      requestInfo instanceof URL ? requestInfo.toString() : requestInfo,
-      init
-    );
+    console.debug(`HTTP ${init?.method}: ${requestInfo.toString()}`);
+    const response = await fetch(requestInfo.toString(), init);
     if (!response.ok) {
       let details: string | undefined = undefined;
       try {

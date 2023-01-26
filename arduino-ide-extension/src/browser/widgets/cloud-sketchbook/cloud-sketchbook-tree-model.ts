@@ -17,7 +17,6 @@ import {
   LocalCacheUri,
 } from '../../local-cache/local-cache-fs-provider';
 import URI from '@theia/core/lib/common/uri';
-import { SketchCache } from './cloud-sketch-cache';
 import { Create } from '../../create/typings';
 import { nls } from '@theia/core/lib/common/nls';
 import { Deferred } from '@theia/core/lib/common/promise-util';
@@ -64,8 +63,6 @@ export class CloudSketchbookTreeModel extends SketchbookTreeModel {
   private readonly authenticationService: AuthenticationClientService;
   @inject(LocalCacheFsProvider)
   private readonly localCacheFsProvider: LocalCacheFsProvider;
-  @inject(SketchCache)
-  private readonly sketchCache: SketchCache;
 
   private _localCacheFsProviderReady: Deferred<void> | undefined;
 
@@ -127,7 +124,7 @@ export class CloudSketchbookTreeModel extends SketchbookTreeModel {
       this.tree.root = undefined;
       return;
     }
-    this.sketchCache.init();
+    this.createApi.sketchCache.init();
     const [sketches] = await Promise.all([
       this.createApi.sketches(),
       this.ensureLocalFsProviderReady(),
